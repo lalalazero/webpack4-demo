@@ -111,3 +111,36 @@ npm 安装依赖
 ```
 npm 安装依赖
 `npm i file-loader -D`
+
+
+- url-loader 可以设置较小资源的 base64 内联
+```javascript
+{
+   // webpack.config.js 配置 ...省略其他
+    rules: [
+        {
+            test: /\.(png|jpg|gif|jpeg)$/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10240 // 10kb
+                    }
+                }
+            ]
+        }
+    ] 
+}
+```
+npm 安装依赖
+`npm i url-loader -D`
+
+用 file-loader 解析图片
+![image](https://user-images.githubusercontent.com/20458239/79694312-237e1600-82a2-11ea-8e0c-8d960d2a6e2d.png)
+
+用 url-loader 将图片 base64 内联之后
+![image](https://user-images.githubusercontent.com/20458239/79694262-dbf78a00-82a1-11ea-8ee3-498264aa0cd2.png)
+
+
+
+
