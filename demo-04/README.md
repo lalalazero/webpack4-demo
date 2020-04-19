@@ -79,3 +79,35 @@ npm 安装如下依赖
 ```
 npm 安装依赖
 `npm i less less-loader -D`
+
+
+## 解析图片和字体
+- file-loader 解析
+```javascript
+{
+    // webpack.config.js 配置 ...省略其他
+    rules: [
+        {
+            test: /\.(png|jpg|gif|jpeg)$/,
+            use: 'file-loader'
+        },
+        {
+            test: /\.(woff|woff2|eot|otf|ttf)$/,
+            use: 'file-loader'
+        }
+    ]
+}
+```
+```css
+/* 定义字体 */
+@font-face {
+    font-family: 'SourceHanSerifSC-Heavy';
+    src: url('./images/SourceHanSerifSC-Heavy.otf');
+}
+/* 使用字体 */
+.search-text {
+    font-family: 'SourceHanSerifSC-Heavy';
+}
+```
+npm 安装依赖
+`npm i file-loader -D`
