@@ -60,3 +60,22 @@ npm 安装如下依赖
 ```
 npm 安装如下依赖
 `npm i style-loader css-loader -D`
+
+## 解析 less
+- less-loader 解析 .less 文件，生成 .css 文件（依赖 less)
+```javascript
+{
+    // webpack.config.js
+    // ...省略其他
+    rules: [
+        {
+            test: /\.less/,
+            use: [
+                'style-loader','css-loader','less-loader'
+            ]
+        }
+    ]
+}
+```
+npm 安装依赖
+`npm i less less-loader -D`

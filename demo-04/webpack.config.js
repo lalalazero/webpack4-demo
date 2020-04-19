@@ -22,6 +22,12 @@ module.exports = {
                 use: [
                     'style-loader', 'css-loader'
                 ] // 注意多个 loader 的调用顺序,从右到左
+            },
+            {
+                test: /\.less/,
+                use: [
+                    'style-loader', 'css-loader', 'less-loader'
+                ]
             }
         ]
     }
