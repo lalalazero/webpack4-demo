@@ -16,6 +16,12 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: 'babel-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader', 'css-loader'
+                ] // 注意多个 loader 的调用顺序,从右到左
             }
         ]
     }
