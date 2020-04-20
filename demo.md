@@ -108,3 +108,54 @@ rem 是相对单位，px 是绝对单位
 在页面渲染时计算根元素(root 节点)的 `font-size` 值可以使用手淘的 `lib-flexible` 库
 
 npm 安装依赖 `npm i px2rem-loader -D`  `npm i lib-flexible -S`(这个是直接依赖)
+
+
+## 资源内联
+
+意义：
+- 页面框架的初始化脚本（比如计算 root 节点的 `font-size`)
+- 上报相关打点
+    - 一些埋点相关的 js 应该内联到页面上，比如页面加载完成上报，CSS 加载完成上报
+    - 前端监控埋点js内联，避免监控资源如果走http请求加载失败，导致无法监控的场景
+- CSS 内联避免页面闪动
+    - 闪动：先没有样式，等CSS资源回来了才有样式）
+    - 内联：一开始随着 HTML 页面回来 CSS 就在页面里了
+- 减少 http 请求开销
+    - 小图片(小于5k/10k)或者字体内联（`url-loader`)
+
+`raw-loader` 内联 html(常用于 meta 信息的内联)
+
+`<%=require("raw-loader!./meta.html")%>`
+
+`raw-loader` 内联 js
+
+`<script><%=require("raw-loader!babel-loader!../node_modules/lib-flexible/flexible.js")%></script>`
+
+`babel-loader` 用来转换 es6 的语法
+
+npm 下载依赖 `npm i raw-loader@0.5.1 -D`
+
+
+CSS内联的做法
+- `style-loader`
+    ```javascript
+    {
+        // webpack.config.js ... 省略其他配置
+        rules: [
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            insertAt: "top", // 样式插入到 <head>
+                            singleton: true // 合并所有 style 标签为 1 个
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    
+    ```
+- `html-inline-css-webpack-plugin`
