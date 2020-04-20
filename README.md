@@ -13,6 +13,8 @@
 - [demo-01](https://github.com/lalalazero/webpack4-demo/tree/master/demo-01) 安装 webpack 和 webpack-cli
 
 ## 其他分支
+- [demo-08](https://github.com/lalalazero/webpack4-demo/blob/demo-08/demo.md) 
+    - 清理构建目录
 
 
 

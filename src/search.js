@@ -8,7 +8,7 @@ class Search extends React.Component {
 
     render() {
         return <div className="search-text-wrapper">
-            <span className="search-text">Search Text 测试热更新</span>
+            <span className="search-text">Search Text 测试热更新信息修测试打包</span>
             <img src={logo}></img>
         </div>
     }
