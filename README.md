@@ -2,6 +2,7 @@
 
 [极客时间课件](https://github.com/lalalazero/geektime-webpack-course)
 
+- [demo-07](./demo-07) 文件压缩(HTML,CSS,JavaScript)
 - [demo-06](./demo-06) 文件指纹
 - [demo-05](./demo-05) 文件监听和热更新WDS
 - [demo-04](./demo-04) 常见资源的 webpack 解析配置
