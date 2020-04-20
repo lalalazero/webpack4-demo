@@ -52,7 +52,7 @@ npm 添加依赖 `npm i clean-webpack-plugin -D`
                     'style-loader', 'css-loader', 'less-loader', {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: plugins: [require('autoprefixer')({
+                            plugins: [require('autoprefixer')({
                                 overrideBrowserslist: ['last 2 version','>1%','IOS 7']
                             })]
                         }
