@@ -28,7 +28,14 @@ module.exports = {
             {
                 test: /\.less/,
                 use: [
-                    'style-loader', 'css-loader', 'less-loader'
+                    'style-loader', 'css-loader', 'less-loader',{
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [require('autoprefixer')({
+                                overrideBrowserslist: ['last 2 version','>1%','IOS 7']
+                            })]
+                        }
+                    }
                 ]
             },
             {
