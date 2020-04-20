@@ -73,3 +73,38 @@ npm 添加依赖 `npm i postcss-loader autoprefixer -D`
 
 对比自动补全效果：
 在 CSS 中增加 `display: flex` 会看到开启插件补全前后的构建结果是有差异的。
+
+## 移动端 CSS px 自动转 rem
+
+由于手机型号众多而且分辨率各不相同，手机页面样式要做不同尺寸的适配。
+- 媒体查询
+    - 需要编写多套适配样式代码
+- rem 相对单位转换
+
+rem： root 节点的 `font-size`（就是 1 个 rem）
+rem 是相对单位，px 是绝对单位
+
+通过使用 `px2rem-loader` 可以将 CSS 中的 px 单位转化为 rem，开发的时候还是写 px，打包的时候由插件自动转换。
+
+```javascript
+{
+    rules: [
+        {
+            test: /\.less$/,
+            use: [
+                'style-loader','css-loader',{
+                    loader: 'px2rem-loader',
+                    options: {
+                        remUnit: 75, // 1rem = 75px 适合 750px 的视觉稿
+                        remPrecision: 8 // px 转换成 rem 之后保留小数点的位数
+                    }
+                },'less-loader',
+            ]
+        }
+    ]
+}
+```
+
+在页面渲染时计算根元素(root 节点)的 `font-size` 值可以使用手淘的 `lib-flexible` 库
+
+npm 安装依赖 `npm i px2rem-loader -D`  `npm i lib-flexible -S`(这个是直接依赖)
