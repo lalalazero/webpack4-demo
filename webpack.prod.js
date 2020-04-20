@@ -10,13 +10,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const setMPA = () => {
     const entry = {}
     const htmlWebpackPlugins = []
-
     const entryFiles = glob.sync(path.join(__dirname, './src/**/index.js'))
-    // [
-    //     '~/Desktop/fe/webpack4-demo/src/index/index.js',
-    //     '~/Desktop/fe/webpack4-demo/src/search/index.js'
-    // ]
-
     Object.keys(entryFiles).map(index => {
         const entryFile = entryFiles[index]
         const match = entryFile.match(/src\/(.*)\/index\.js$/)
@@ -38,8 +32,6 @@ const setMPA = () => {
                 }
             }))
     })
-    console.log(entry)
-    console.log(htmlWebpackPlugins)
     return {
         entry,
         htmlWebpackPlugins
@@ -54,7 +46,7 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: '[name]_[chunkhash:8].js'
     },
-    mode: 'production',
+    mode: 'none',
     module: {
         rules: [
             {
@@ -138,5 +130,6 @@ module.exports = {
             cssProcessor: require('cssnano')
         }),
         new CleanWebpackPlugin()
-    ].concat(htmlWebpackPlugins)
+    ].concat(htmlWebpackPlugins),
+    devtool: 'eval'
 }

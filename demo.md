@@ -1,13 +1,16 @@
-# demo-09
+# demo-10
 
-## 多页面应用打包通用方案
+## 使用 source map
 
-`SPA` v.s. `MPA` 
-- SPA：只有一个 html 页面，不同的页面表现是前端根据 hash 路由或者 browser 路由实现的，本质还是渲染不同的 div
-- MPA: 每次路由地址变化，服务端都返回一个新的 html 页面
+阮一峰老师 sourcemap 科普文
+http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html
 
-多页面应用的优势：页面解耦，利于 SEO 优化
+source map 关键字
+- eval eval包裹模块代码
+- source-map 产生 .map 文件
+- cheap 不包含列信息
+- inline 将 .map 文件作为 DataURI 嵌入，不单独生成 .map 文件
+- module 包含 loader 的 sourcemap
 
-如何做多页面打包？动态获取 entry 并根据 entry 的数量设置对应的 html-webpack-plugin 数量。为了方便动态获取 entry，统一约定 entry 的格式为 src/xxxDir/index.js，比如 src/index/index.js, src/search/index.js，模版文件也都是叫 index.html
-
-npm 安装依赖 `npm i glob -D`
+source map 类型
+![image](https://user-images.githubusercontent.com/20458239/79780880-314d9d00-836f-11ea-9228-12d8b6b5ca6f.png)
