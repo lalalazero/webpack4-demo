@@ -13,12 +13,14 @@
 - [demo-01](https://github.com/lalalazero/webpack4-demo/tree/master/demo-01) 安装 webpack 和 webpack-cli
 
 ## 其他分支
+- [demo-09](https://github.com/lalalazero/webpack4-demo/blob/demo-09/demo.md) 
+    - 多页面应用打包通用方案
 - [demo-08](https://github.com/lalalazero/webpack4-demo/blob/demo-08/demo.md) 
     - 清理构建目录
     - CSS3 前缀自动补全
     - 移动端 CSS px 自动转 rem
     - 资源内联
-    
+
 
 
 
