@@ -46,7 +46,7 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: '[name]_[chunkhash:8].js'
     },
-    mode: 'none',
+    mode: 'production',
     module: {
         rules: [
             {
@@ -56,22 +56,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    MiniCssExtractPlugin.loader, 'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: [require('autoprefixer')({
-                                overrideBrowserslist: ['last 2 version', '>1%', 'IOS 7']
-                            })]
-                        },
-                    },
-                    {
-                        loader: 'px2rem-loader',
-                        options: {
-                            remUnit: 75,
-                            remPrecision: 8
-                        }
-                    },
+                    MiniCssExtractPlugin.loader, 'css-loader'
                 ] // 注意多个 loader 的调用顺序,从右到左
             },
             {
@@ -79,21 +64,6 @@ module.exports = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: [require('autoprefixer')({
-                                overrideBrowserslist: ['last 2 version', '>1%', 'IOS 7']
-                            })]
-                        },
-                    },
-                    {
-                        loader: 'px2rem-loader',
-                        options: {
-                            remUnit: 75,
-                            remPrecision: 8
-                        }
-                    },
                     'less-loader'
                 ]
             },

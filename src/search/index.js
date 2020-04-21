@@ -7,7 +7,6 @@ import logo from '../images/logo.png'
 class Search extends React.Component {
 
     render() {
-        debugger
         return <div className="search-text-wrapper">
             <span>Search ～～</span>
             <span className="search-text">Search Text 测试热更新信息修测试打包</span>
