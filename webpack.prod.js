@@ -109,6 +109,11 @@ module.exports = {
                     name: "commons",
                     chunks: "all",
                     minChunks: 2 // 最小引用次数是2,有>=2次引用就分离打包
+                },
+                vendors: {
+                    test: /(react|react-dom)/,
+                    name: 'vendors',
+                    chunks: 'all'
                 }
             }
         }

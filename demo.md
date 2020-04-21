@@ -67,6 +67,29 @@ new HtmlWebpackPlugin({
     chunks: ['vendors', 'commons', pageName]
 })
 ```
+### 同时分离 vendors 和 commons
+
+```javascript
+optimization: {
+        splitChunks: {
+            minSize: 0, // 引用的包体积的大小，超过这个大小就分离
+            cacheGroups: {
+                commons: {
+                    name: "commons",
+                    chunks: "all",
+                    minChunks: 2 // 最小引用次数是2,有>=2次引用就分离打包
+                },
+                vendors: {
+                    test: /(react|react-dom)/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    }
+```
+
+
 ### html-webpack-externals-plugin 体验分离基础包
 
 npm 安装依赖 `npm i html-webpack-externals-plugin -D`
