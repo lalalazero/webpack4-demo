@@ -20,7 +20,7 @@ const setMPA = () => {
             new HtmlWebpackPlugin({
                 template: path.join(__dirname, `src/${pageName}/index.html`),
                 filename: `${pageName}.html`,
-                chunks: ['vendors', pageName],
+                chunks: ['vendors', 'commons', pageName],
                 inject: true,
                 minify: {
                     html5: true,
@@ -103,11 +103,12 @@ module.exports = {
     ].concat(htmlWebpackPlugins),
     optimization: {
         splitChunks: {
+            minSize: 0, // 引用的包体积的大小，超过这个大小就分离
             cacheGroups: {
                 commons: {
-                    test: /(react|react-dom)/,
-                    name: "vendors",
-                    chunks: "all"
+                    name: "commons",
+                    chunks: "all",
+                    minChunks: 2 // 最小引用次数是2,有>=2次引用就分离打包
                 }
             }
         }

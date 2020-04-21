@@ -48,16 +48,24 @@ new HtmlWebpackPlugin({
 
 ### 分离页面公共文件
 ```javascript
-splitChunks: {
-    minSize: 0, // 分离的包体积的大小
-    cacheGroups: {
-        commons: {
-            name: "commons",
-            chunks: "all",
-            minChunks: 2 // 最小引用次数是2,超过2次引用就分离打包
+optimization: {
+    splitChunks: {
+        minSize: 0, // 分离的包体积的大小
+        cacheGroups: {
+            commons: {
+                name: "commons",
+                chunks: "all",
+                minChunks: 2 // 最小引用次数是2,有1次以上引用就分离打包
+            }
         }
     }
 }
+```
+被分离的公共文件必须同时满足 minSize 和 minChunks 条件才会被分离打包，打包出来后有 `commons.[chunkshash].js` 文件。同样的，为了在打包出来的 html 文件中引入这个 js，仍然需要修改 `htmlWebpackPlugin` 的 `chunks` 属性
+```javascript
+new HtmlWebpackPlugin({
+    chunks: ['vendors', 'commons', pageName]
+})
 ```
 ### html-webpack-externals-plugin 体验分离基础包
 
