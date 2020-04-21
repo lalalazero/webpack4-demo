@@ -131,5 +131,5 @@ module.exports = {
         }),
         new CleanWebpackPlugin()
     ].concat(htmlWebpackPlugins),
-    devtool: 'eval'
+    devtool: 'source-map'
 }
