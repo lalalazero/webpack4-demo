@@ -131,5 +131,4 @@ module.exports = {
         }),
         new CleanWebpackPlugin()
     ].concat(htmlWebpackPlugins),
-    devtool: 'inline-source-map'
 }
