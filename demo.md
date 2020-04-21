@@ -17,16 +17,33 @@
 
 比如分离 react， react-dom
 ```javascript
-splitChunks: {
+optimization: {
+    splitChunks: {
     cacheGroups: {
-        commons: {
-            test: /(react|react-dom)/,
-            name: "vendors",
-            chunks: "all"
+            commons: {
+                test: /(react|react-dom)/,
+                name: "vendors",
+                chunks: "all" // 注意这个参数
+            }
         }
     }
 }
+
 ```
+这里要注意这个 chunks 参数说明
+
+- async 异步引入的库进行分离(默认)
+- initial 同步引入的库进行分离
+- all 所有引入的库进行分离(推荐)
+
+打包出来就会有单独的 `vendors.[chunkshash].js` 文件，为了要在打包出来的 html 文件中使用这个 chunks，需要更新 htmlWebpackPlugin 的配置为
+```javascript
+new HtmlWebpackPlugin({
+    chunks: ['vendors', pageName]
+})
+```
+效果如：
+![image](https://user-images.githubusercontent.com/20458239/79878599-30287880-8420-11ea-9647-99582b77fcc1.png)
 
 
 ### 分离页面公共文件

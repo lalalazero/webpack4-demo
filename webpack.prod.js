@@ -5,7 +5,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssestsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const HtmlWebpackExternalPlugin = require('html-webpack-externals-plugin')
 
 
 const setMPA = () => {
@@ -21,7 +20,7 @@ const setMPA = () => {
             new HtmlWebpackPlugin({
                 template: path.join(__dirname, `src/${pageName}/index.html`),
                 filename: `${pageName}.html`,
-                chunks: [pageName],
+                chunks: ['vendors', pageName],
                 inject: true,
                 minify: {
                     html5: true,
@@ -32,24 +31,6 @@ const setMPA = () => {
                     removeComments: false
                 }
             }))
-        htmlWebpackPlugins.push(
-            new HtmlWebpackExternalPlugin({
-                externals: [
-                    {
-                        module: 'react',
-                        entry: 'https://cdn.bootcss.com/react/16.13.1/umd/react.production.min.js',
-                        global: 'React'
-                    },
-                    {
-                        module: 'react-dom',
-                        entry: 'https://cdn.bootcss.com/react-dom/16.13.1/umd/react-dom.production.min.js',
-                        global: 'ReactDOM'
-
-                    }
-                ],
-                files: `${pageName}.html`
-            })
-        )
     })
     return {
         entry,
@@ -120,4 +101,15 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
     ].concat(htmlWebpackPlugins),
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /(react|react-dom)/,
+                    name: "vendors",
+                    chunks: "all"
+                }
+            }
+        }
+    }
 }
