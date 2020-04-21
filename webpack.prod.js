@@ -32,6 +32,24 @@ const setMPA = () => {
                     removeComments: false
                 }
             }))
+        htmlWebpackPlugins.push(
+            new HtmlWebpackExternalPlugin({
+                externals: [
+                    {
+                        module: 'react',
+                        entry: 'https://cdn.bootcss.com/react/16.13.1/umd/react.production.min.js',
+                        global: 'React'
+                    },
+                    {
+                        module: 'react-dom',
+                        entry: 'https://cdn.bootcss.com/react-dom/16.13.1/umd/react-dom.production.min.js',
+                        global: 'ReactDOM'
+
+                    }
+                ],
+                files: `${pageName}.html`
+            })
+        )
     })
     return {
         entry,
@@ -101,20 +119,5 @@ module.exports = {
             cssProcessor: require('cssnano')
         }),
         new CleanWebpackPlugin(),
-        new HtmlWebpackExternalPlugin({
-            externals: [
-                {
-                    module: 'react',
-                    entry: 'https://cdn.bootcss.com/react/16.13.1/umd/react.production.min.js',
-                    global: 'React'
-                },
-                {
-                    module: 'react-dom',
-                    entry: 'https://cdn.bootcss.com/react-dom/16.13.1/umd/react-dom.production.min.js',
-                    global: 'ReactDOM'
-
-                }
-            ]
-        })
     ].concat(htmlWebpackPlugins),
 }
