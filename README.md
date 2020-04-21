@@ -5,11 +5,11 @@
 ## 其他分支
 
 - [demo-11](https://github.com/lalalazero/webpack4-demo/blob/demo-11/demo.md)
-    - 提取页面公共资源
+    - 提取页面公共资源 splitChunksPlugin
 - [demo-10](https://github.com/lalalazero/webpack4-demo/blob/demo-10/demo.md)
     - 使用 source map
 - [demo-09](https://github.com/lalalazero/webpack4-demo/blob/demo-09/demo.md) 
-    - 多页面应用打包通用方案
+    - 多页面应用打包通用方案 glob.sync
 - [demo-08](https://github.com/lalalazero/webpack4-demo/blob/demo-08/demo.md) 
     - 清理构建目录
     - CSS3 前缀自动补全
