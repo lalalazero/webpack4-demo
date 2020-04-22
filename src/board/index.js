@@ -1,1 +1,1 @@
-document.write('board...')
+document.write('board...');

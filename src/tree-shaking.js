@@ -1,7 +1,7 @@
 export function a() {
-    return 'This is function A'
+    return 'This is function A';
 }
 
-export function b(){
-    return 'This is function B'
+export function b() {
+    return 'This is function B';
 }

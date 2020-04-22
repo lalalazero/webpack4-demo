@@ -23,6 +23,7 @@
 ```shell
 npm i eslint eslint-plugin-import eslint-plugin-react  eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-config-airbnb -D
 ```
+注意 `eslint` 可以推荐全局安装，写 js 的时候可以通过命令行对代码进行一个风格检查。
 
 添加 loader `npm i eslint-loader -D`
 
@@ -61,4 +62,9 @@ module.exports = {
     "indent": ["error", 4]
 }
 ```
-具体的规则配置都可以去 eslint 的[网站规则](https://eslint.org/docs/rules/) 查找。
+具体的规则配置都可以去 eslint 的[网站规则(英文)](https://eslint.org/docs/rules/)或者[中文网站](http://eslint.cn/docs/rules/)查找
+
+- 配置 lint 命令自动修复代码
+
+`"lint": "eslint --fix ./src"`
+
