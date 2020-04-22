@@ -1,1 +1,1 @@
-{"version":3,"sources":["webpack:///./src/text.js"],"names":[],"mappings":"yFAAA,2BAEe,4BAAM","file":"4_20edf2db.js","sourcesContent":["import React from 'react'\r\n\r\nexport default () => <div> 动态 import 的文字 </div>"],"sourceRoot":""}
+{"version":3,"sources":["webpack:///./src/text.js"],"names":[],"mappings":"yFAAA,2BAEe,4BAAM","file":"4_20edf2db.js","sourcesContent":["import React from 'react'\n\nexport default () => <div> 动态 import 的文字 </div>"],"sourceRoot":""}

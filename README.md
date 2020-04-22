@@ -4,6 +4,7 @@
 
 ## 其他分支
 
+- [demo-15](https://github.com/lalalazero/webpack4-demo/blob/demo-15/demo.md) 增加 ESLint 检查 
 - [demo-14](https://github.com/lalalazero/webpack4-demo/blob/demo-14/demo.md) 动态 import 实现懒加载 js
 - [demo-13](https://github.com/lalalazero/webpack4-demo/blob/demo-13/demo.md) scope hoisting  【TODO】
 - [demo-12](https://github.com/lalalazero/webpack4-demo/blob/demo-12/demo.md) tree-shaking 和 DCE 优化
