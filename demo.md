@@ -53,3 +53,29 @@ import { a } from '../tree-shaking'
 ![image](https://user-images.githubusercontent.com/20458239/79958783-ec804e00-84b5-11ea-9dfa-a6c31551c49e.png)
 
 设置 `mode: 'production'` 开启自动优化后，打包出来的代码根本搜不到 `This is function A` 和 `This is function B`，也就是都被擦除掉了。
+
+- DCE 代码优化
+```js
+render(){
+    if (false) {
+        console.log('永远不会执行')
+    }
+}
+```
+实践证明，即便 `mode: 'none'`， webpack 也会在打包的时候进行 DEC 优化，打包出来的代码搜不到`永远不会执行`。
+
+稍微改写一下，webpack 就没有那么智能了。
+
+```js
+render(){
+    const f = false
+    if (f) {
+        console.log('永远不会执行')
+    }
+}
+
+```
+
+![image](https://user-images.githubusercontent.com/20458239/79960606-2c483500-84b8-11ea-9dda-ff22d6255a35.png)
+
+开启 `mode: 'production'` 优化试一下，打包出来的代码被 DCE 了。看来 `production` 模式是要强一点。

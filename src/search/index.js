@@ -9,6 +9,10 @@ import { a } from '../tree-shaking'
 class Search extends React.Component {
     
     render() {
+        const f = false
+        if (f) {
+            console.log('永远不会执行')
+        }
         return <div className="search-text-wrapper">
             { a() }
             <span>Search ～～</span>

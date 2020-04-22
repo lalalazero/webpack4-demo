@@ -4,6 +4,7 @@
 
 ## 其他分支
 
+- [demo-12](https://github.com/lalalazero/webpack4-demo/blob/demo-12/demo.md) tree-shaking 和 DCE 优化
 - [demo-11](https://github.com/lalalazero/webpack4-demo/blob/demo-11/demo.md)
     - 提取页面公共资源 
         - htmlWebpackExternalsPlugin
