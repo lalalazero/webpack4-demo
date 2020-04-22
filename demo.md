@@ -1,198 +1,55 @@
-# demo-11 提取页面公共资源
+# demo-12 Tree-Shaking 和 DCE
 
-## 提取思路
+## Tree-shaking 优化
+tree-shaking: 只把用到的代码打包到 bundle 中去，其他没用到的在 uglify 阶段自动擦除。
 
-### 基础库分离
+原理：利用 ES 模块的特点做静态分析。
 
-- 将 vue， react，react-dom 等基础库通过 cdn 引入，不打入 bundle 中
-- 使用 html-webpack-externals-plugin
+- import 语句只能作为顶层语句出现
+- import 的模块名只能是字符串常量
+- import 和 export 的 binding 必须是不可变的。(见 ruanyf 老师 es6 关于模块化的文章)
+    - 不能写类似 `import x  from 'someModule'; x = yyy ` 这种东西
 
-### 公共脚本分离
+因此对于 ES 模块可以通过静态分析，找出使用的方法，然后擦除没有用到的方法。
+由于 CommonJS 的导入导出是动态的，所以没法针对 CJS 做 tree-shaking 优化。
 
-- webpack4 内置的 SplitChunksPlugin，用于替代(CommonsChunkPlugin插件)
-    
-## splitChunksPlugin 
 
-### 分离基础库(vendor库)
+## DCE 优化 
 
-比如分离 react， react-dom
-```javascript
-optimization: {
-    splitChunks: {
-    cacheGroups: {
-            commons: {
-                test: /(react|react-dom)/,
-                name: "vendors",
-                chunks: "all" // 注意这个参数
-            }
-        }
+DCE = Dead Code Elimination
+
+- 不可执行的代码
+    ```js
+    if(false){
+        console.log('永远不会打印')
     }
+    ```
+
+
+webpack4 在 `production` 模式下默认开启 tree-shaking 优化和 DCE 优化
+
+## 查看效果
+
+- 只 import 但是没有使用的方法
+- 没有被 import 到的方法
+
+```js
+// tree-shaking.js
+export function a() {
+    return 'This is function A'
 }
 
-```
-这里要注意这个 chunks 参数说明
-
-- async 异步引入的库进行分离(默认)
-- initial 同步引入的库进行分离
-- all 所有引入的库进行分离(推荐)
-
-打包出来就会有单独的 `vendors.[chunkshash].js` 文件，为了要在打包出来的 html 文件中使用这个 chunks，需要更新 htmlWebpackPlugin 的配置为
-```javascript
-new HtmlWebpackPlugin({
-    chunks: ['vendors', pageName]
-})
-```
-效果如：
-![image](https://user-images.githubusercontent.com/20458239/79878599-30287880-8420-11ea-9647-99582b77fcc1.png)
-
-
-### 分离页面公共文件
-```javascript
-optimization: {
-    splitChunks: {
-        minSize: 0, // 分离的包体积的大小
-        cacheGroups: {
-            commons: {
-                name: "commons",
-                chunks: "all",
-                minChunks: 2 // 最小引用次数是2,有1次以上引用就分离打包
-            }
-        }
-    }
+export function b(){
+    return 'This is function B'
 }
 ```
-被分离的公共文件必须同时满足 minSize 和 minChunks 条件才会被分离打包，打包出来后有 `commons.[chunkshash].js` 文件。同样的，为了在打包出来的 html 文件中引入这个 js，仍然需要修改 `htmlWebpackPlugin` 的 `chunks` 属性
-```javascript
-new HtmlWebpackPlugin({
-    chunks: ['vendors', 'commons', pageName]
-})
-```
-### 同时分离 vendors 和 commons
-
-```javascript
-optimization: {
-        splitChunks: {
-            minSize: 0, // 引用的包体积的大小，超过这个大小就分离
-            cacheGroups: {
-                commons: {
-                    name: "commons",
-                    chunks: "all",
-                    minChunks: 2 // 最小引用次数是2,有>=2次引用就分离打包
-                },
-                vendors: {
-                    test: /(react|react-dom)/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        }
-    }
+```js
+// search.js 引用 a 方法但是不使用
+import { a } from '../tree-shaking'
 ```
 
+设置 `mode:'none'` 不开启 tree-shaking 和 DCE 优化，实际打包出来的代码。（为了方便截图，开启了 `devtool: 'source-map'`)。可以看到 tree-shaking.js 被完整的打包出来了
 
-### html-webpack-externals-plugin 体验分离基础包
+![image](https://user-images.githubusercontent.com/20458239/79958783-ec804e00-84b5-11ea-9dfa-a6c31551c49e.png)
 
-npm 安装依赖 `npm i html-webpack-externals-plugin -D`
-
-HtmlWebpackExternalsPlugin 分离 react 和 react-dom 之后构建的 js 明显小了很多
-```javascript
-{
-  // webpack.config.prod.js ...省略其他配置
-  plugins: [
-      new HtmlWebpackExternalPlugin({
-            externals: [
-                {
-                    module: 'react',
-                    entry: 'https://cdn.bootcss.com/react/16.13.1/umd/react.production.min.js',
-                    global: 'React'
-                },
-                {
-                    module: 'react-dom',
-                    entry: 'https://cdn.bootcss.com/react-dom/16.13.1/umd/react-dom.production.min.js',
-                    global: 'ReactDOM'
-
-                }
-            ]
-        })
-  ]
-}
-
-```
-![image](https://user-images.githubusercontent.com/20458239/79871110-7c6ebb00-8416-11ea-9579-6dde66f7e510.png)
-
-对比分离之前(index.js 由于没有引用 React 和 ReactDOM 所以分离前后体积大小没什么变化）
-
-![image](https://user-images.githubusercontent.com/20458239/79871363-d0799f80-8416-11ea-9392-c906ece0f88e.png)
-
-**存在问题**
-当直接把 htmlWebpackExternalsPlugin 写到 plugins 数组的后面时
-```javascript
-{
-    // webpack.config.js ... 省略其他配置
-    plugins: [
-        new HtmlWebpackExternalPlugin({
-            externals: [
-                {
-                    module: 'react',
-                    entry: 'https://cdn.bootcss.com/react/16.13.1/umd/react.production.min.js',
-                    global: 'React'
-                },
-                {
-                    module: 'react-dom',
-                    entry: 'https://cdn.bootcss.com/react-dom/16.13.1/umd/react-dom.production.min.js',
-                    global: 'ReactDOM'
-
-                }
-            ]
-        })
-    ]
-}
-
-```
-
-出现奇怪的情况，为什么 index.html 把 react 和 react-dom 的 cdn 引入了一次，而 search.html 中各引入了两次？
-![image](https://user-images.githubusercontent.com/20458239/79873534-d2912d80-8419-11ea-9844-3381d5c22ec6.png)
-
-初步怀疑跟多页面打包有关，我又新加了一个 board/index.js board/index.html，然后打包出来3个页面 index.html, search.html, board.html，其中只有 search.js 中用到了 react，其他两个都没有用到 react。index.html 和 board.html 分别引用了 react 和 react-dom 各一次，而 search.html 引用了 react 和 react-dom 分别3次！
-
-看了下[官方文档](https://github.com/mmiller42/html-webpack-externals-plugin)：**这里说明了如果有多个 htmlWebpackPlugin 实例，要指定 htmlWebpackExternalsPlugin 的 files 属性，否则会默认打到所有的文件中去**
-![image](https://user-images.githubusercontent.com/20458239/79875822-c195eb80-841c-11ea-8b48-2b712c1742b6.png)
-
-所以把插件改写成了这样
-```javascript
-// setMPA() 函数内的改造
-htmlWebpackPlugins.push(
-    new HtmlWebpackPlugin({
-        template: path.join(__dirname, `src/${pageName}/index.html`),
-        filename: `${pageName}.html`,
-        chunks: [pageName],
-        inject: true,
-        minify: {
-            html5: true,
-            collapseWhitespace: true,
-            preserveLineBreaks: false,
-            minifyCSS: true,
-            minifyJS: true,
-            removeComments: false
-        }
-    }))
-htmlWebpackPlugins.push(
-    new HtmlWebpackExternalPlugin({
-        externals: [
-            {
-                module: 'react',
-                entry: 'https://cdn.bootcss.com/react/16.13.1/umd/react.production.min.js',
-                global: 'React'
-            },
-            {
-                module: 'react-dom',
-                entry: 'https://cdn.bootcss.com/react-dom/16.13.1/umd/react-dom.production.min.js',
-                global: 'ReactDOM'
-
-            }
-        ],
-        files: `${pageName}.html`
-    })
-)
-```
-保证 htmlWebpackPlugin 和 htmlWebpackExternalsPlugin 是成对的。这样修改之后，index.html 和 search.html board.html 都按照预期的只打了一次 react 和 react-dom 的 cdn 链接进去。
+设置 `mode: 'production'` 开启自动优化后，打包出来的代码根本搜不到 `This is function A` 和 `This is function B`，也就是都被擦除掉了。

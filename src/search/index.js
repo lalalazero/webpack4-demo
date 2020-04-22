@@ -4,11 +4,13 @@ import './search.css'
 import './search.less'
 import '../../common';
 import logo from '../images/logo.png'
+import { a } from '../tree-shaking'
 
 class Search extends React.Component {
-
+    
     render() {
         return <div className="search-text-wrapper">
+            { a() }
             <span>Search ～～</span>
             <span className="search-text">Search Text 测试热更新信息修测试打包</span>
             <img src={logo}></img>

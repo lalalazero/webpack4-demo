@@ -101,6 +101,7 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
     ].concat(htmlWebpackPlugins),
+    devtool: 'source-map',
     optimization: {
         splitChunks: {
             minSize: 0, // 引用的包体积的大小，超过这个大小就分离
